@@ -1,0 +1,4 @@
+// User clicks on extension icon
+// Find URL from active tab
+// Format URL as such: TEST - testing test 1
+// Copy content to clipboard

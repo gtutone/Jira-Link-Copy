@@ -10,23 +10,21 @@ chrome.action.onClicked.addListener(async (tab) =>
 			return tab.url
 		}
 		const currentURL = getCurrentURL();
-		console.log(currentURL);
-		console.log("Yes this is a Jira URL");
 		
 		// Get the bug number
 		let bugNum = currentURL.substr(lithJira.length);
-		console.log(bugNum);
 
-		// Put it all together
+		// Make the bug number a link
+		const bugNumLink = "<" + currentURL + "|[" + bugNum + "]>"
+		console.log(bugNumLink);
 
-
-
-
-
-
+		// Get the Issue Summary
+		// const regex = '\[.+?\]\s';
+		const issueSummary = tab.title.slice(0,-7).replace(\[.+?\]\s, '');
+		console.log(issueSummary);
 
 	} else 
 	{
-		console.log("This is not a Jira URL");
+		console.log("This is not a Jira Bug");
 	}
 });

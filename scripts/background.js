@@ -20,7 +20,7 @@ chrome.action.onClicked.addListener(async (tab) =>
 
 		// Get the Issue Summary
 		// const regex = '\[.+?\]\s';
-		const issueSummary = tab.title.slice(0,-7).replace(\[.+?\]\s, '');
+		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
 		console.log(issueSummary);
 
 	} else 

@@ -15,13 +15,35 @@ chrome.action.onClicked.addListener(async (tab) =>
 		let bugNum = currentURL.substr(lithJira.length);
 
 		// Make the bug number a link
-		const bugNumLink = "<" + currentURL + "|[" + bugNum + "]>"
-		console.log(bugNumLink);
+		const bugNumLink = "<" + currentURL + "|[" + bugNum + "]> - ";
 
 		// Get the Issue Summary
-		// const regex = '\[.+?\]\s';
 		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
-		console.log(issueSummary);
+
+		// Put the pastable text together
+		const pastableText = bugNumLink + issueSummary
+		console.log(pastableText);
+
+		// use an offscreen document to write the value of `pastableText` to the system clipboard.
+		await addToClipboard(pastableText);
+
+		// Create an offscreen document and pass it the data we want to write to the clipboard.
+		async function addToClipboard(value) {
+		  await chrome.offscreen.createDocument({
+		    url: 'offscreen.html',
+		    reasons: [chrome.offscreen.Reason.CLIPBOARD],
+		    justification: 'Write text to the clipboard.'
+		  });
+
+		  // Now that we have an offscreen document, we can dispatch the
+		  // message.
+		  chrome.runtime.sendMessage({
+		    type: 'copy-data-to-clipboard',
+		    target: 'offscreen-doc',
+		    data: value
+		  });
+		}
+
 
 	} else 
 	{

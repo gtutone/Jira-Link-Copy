@@ -3,7 +3,7 @@
 	"name": "Jira Link Copier",
 	"version": "1.0",
 	"description": "Extension to copy Jira links and format them appropriately.",
-	"permissions": ["activeTab"],
+	"permissions": ["activeTab", "offscreen", "clipboardWrite"],
 
 	"icons":
 	{

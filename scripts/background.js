@@ -21,8 +21,9 @@ chrome.action.onClicked.addListener(async (tab) =>
 		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
 
 		// Put the pastable text together
-		const pastableText = bugNumLink + issueSummary
+		const pastableText = '<a href="' + currentURL +  '">' + bugNum + "</a> - " + issueSummary
 		console.log(pastableText);
+
 
 		// use an offscreen document to write the value of `pastableText` to the system clipboard.
 		await addToClipboard(pastableText);

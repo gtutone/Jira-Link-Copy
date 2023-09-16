@@ -1,17 +1,3 @@
-// Copyright 2023 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 // Once the message has been posted from the service worker, checks are made to
 // confirm the message type and target before proceeding. This is so that the
 // module can easily be adapted into existing workflows where secondary uses for
@@ -64,9 +50,34 @@ async function handleClipboardWrite(data) {
     // `document.execCommand('copy')` works against the user's selection in a web
     // page. As such, we must insert the string we want to copy to the web page
     // and to select that content in the page before calling `execCommand()`.
-    textEl.value = data;
-    textEl.select();
-    document.execCommand('copy');
+
+    // Create an iframe (isolated container) for the HTML
+      var container = document.createElement('div')
+      container.innerHTML = data
+      
+      // Hide element
+      container.style.position = 'fixed'
+      container.style.pointerEvents = 'none'
+      container.style.opacity = 0
+
+      // Mount the iframe to the DOM to make `contentWindow` available
+      document.body.appendChild(container)
+
+      // Copy to clipboard
+      window.getSelection().removeAllRanges()
+      
+      var range = document.createRange()
+      range.selectNode(container)
+      window.getSelection().addRange(range)
+
+      document.execCommand('copy')
+      for (var i = 0; i < activeSheets.length; i++) activeSheets[i].disabled = true
+      document.execCommand('copy')
+      for (var i = 0; i < activeSheets.length; i++) activeSheets[i].disabled = false
+      
+      // Remove the iframe
+      document.body.removeChild(container)
+
   } finally {
     // Job's done! Close the offscreen document.
     window.close();

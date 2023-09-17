@@ -21,33 +21,49 @@ chrome.action.onClicked.addListener(async (tab) =>
 		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
 
 		// Put the pastable text together
-		const pastableText = '<a href="' + currentURL +  '">' + bugNum + "</a> - " + issueSummary
+		const pastableText = '<a href="' + currentURL + '">' + bugNum + "</a> - " + issueSummary
 		console.log(pastableText);
 
-
-		// use an offscreen document to write the value of `pastableText` to the system clipboard.
-		await addToClipboard(pastableText);
-
-		// Create an offscreen document and pass it the data we want to write to the clipboard.
-		async function addToClipboard(value) {
-		  await chrome.offscreen.createDocument({
-		    url: 'offscreen.html',
-		    reasons: [chrome.offscreen.Reason.CLIPBOARD],
-		    justification: 'Write text to the clipboard.'
-		  });
-
-		  // Now that we have an offscreen document, we can dispatch the
-		  // message.
-		  chrome.runtime.sendMessage({
-		    type: 'copy-data-to-clipboard',
-		    target: 'offscreen-doc',
-		    data: value
-		  });
-		}
-
+		copyFormatted (pastableText);
 
 	} else 
 	{
 		console.log("This is not a Jira Bug");
 	}
 });
+
+// This function expects an HTML string and copies it as rich text.
+function copyFormatted (html)
+{
+	// Create container for the HTML
+	var container = document.createElement('div')
+	container.innerHTML = html
+
+	// Hide element
+	container.style.position = 'fixed'
+	container.style.pointerEvents = 'none'
+	container.style.opacity = 0
+
+	// Detect all style sheets of the page
+	var activeSheets = Array.prototype.slice.call(document.styleSheets)
+	.filter(function (sheet)
+	{
+		return !sheet.disabled
+	})
+
+	// Mount the container to the DOM to make `contentWindow` available
+	document.body.appendChild(container)
+
+	// Copy to clipboard
+	window.getSelection().removeAllRanges()
+	var range = document.createRange()
+	range.selectNode(container)
+	window.getSelection().addRange(range)
+	document.execCommand('copy')
+	for (var i = 0; i < activeSheets.length; i++) activeSheets[i].disabled = true
+	document.execCommand('copy')
+	for (var i = 0; i < activeSheets.length; i++) activeSheets[i].disabled = false
+
+	// Remove the container
+	document.body.removeChild(container)
+};

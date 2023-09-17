@@ -1,4 +1,4 @@
-const lithJira = 'https://gtutone-test.atlassian.net/browse/';
+const lithJira = 'https://lithjira.wbiegames.com:8443/browse/';
 
 chrome.action.onClicked.addListener(async (tab) => 
 {
@@ -18,7 +18,7 @@ chrome.action.onClicked.addListener(async (tab) =>
 		const bugNumLink = "<" + currentURL + "|[" + bugNum + "]> - ";
 
 		// Get the Issue Summary
-		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
+		const issueSummary = tab.title.slice(0,-11).replace(/\[.+?\]\s/, '');
 
 		// Put the pastable text together
 		const pastableText = '<a href="' + currentURL + '">' + bugNum + "</a> - " + issueSummary

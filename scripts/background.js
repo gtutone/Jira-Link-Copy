@@ -1,4 +1,4 @@
-const lithJira = 'https://gtutone-test.atlassian.net/browse/';
+const lithJira = 'https://lithjira.wbiegames.com:8443/browse/';
 
 chrome.commands.onCommand.addListener(function(command)
 {

@@ -1,4 +1,5 @@
-// User clicks on extension icon
-// Find URL from active tab
-// Format URL as such: TEST - testing test 1
-// Copy content to clipboard
+Chrome extension to copy Jira URLs and issue names in a pastable format.
+
+Instructions:
+1. Navigate to a Jira issue tab
+2. Press CTRL+SHIFT+1 to copy the issue name and URL

@@ -27,7 +27,7 @@
 			"48": "images/icon-48.png",
 			"128": "images/icon-128.png"
 		},
-		"default_title": "Click to copy bug number, summary and URL to clipboard",
+		"default_title": "Press CTRL+SHIFT+1 to copy Jira bug number, summary and URL to clipboard",
 		"default_popup": "popup.html"
 	},
 

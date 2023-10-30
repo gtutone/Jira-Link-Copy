@@ -1,25 +1,30 @@
-const lithJira = 'https://lithjira.wbiegames.com:8443/browse/';
+const lithJira = 'https://gtutone-test.atlassian.net/browse/';
 
-chrome.action.onClicked.addListener(async (tab) => 
+chrome.commands.onCommand.addListener(function(command)
 {
-	if (tab.url.startsWith(lithJira))
+	jiraCopier()
+});
+
+async function jiraCopier()
+{
+	let queryOptions = { active: true, lastFocusedWindow: true };
+	// `tab` will either be a `tabs.Tab` instance or `undefined`.
+	let [tab] = await chrome.tabs.query(queryOptions);
+	let tabURL = tab.url;
+
+	if (tabURL.startsWith(lithJira))
 	{
-		// Get the URL
-		function getCurrentURL()
-		{
-			return tab.url
-		}
-		const currentURL = getCurrentURL();
-		
 		// Get the bug number
-		let bugNum = currentURL.substr(lithJira.length);
-		console.log(bugNum);
+		let bugNum = tabURL.substr(lithJira.length);
+
+		// Make the bug number a link
+		const bugNumLink = "<" + tabURL + "|[" + bugNum + "]> - ";
 
 		// Get the Issue Summary
-		const issueSummary = tab.title.slice(0,-11).replace(/\[.+?\]\s/, '');
+		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
 
 		// Put the pastable text together
-		const pastableText = '<a href="' + currentURL +  '">' + bugNum + "</a> - " + issueSummary
+		const pastableText = '<a href="' + tabURL +  '">' + bugNum + "</a> - " + issueSummary
 		console.log(pastableText);
 
 
@@ -48,4 +53,4 @@ chrome.action.onClicked.addListener(async (tab) =>
 	{
 		console.log("This is not a Jira Bug");
 	}
-});
+};

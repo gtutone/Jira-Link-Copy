@@ -24,7 +24,8 @@ async function jiraCopier()
 		const issueSummary = tab.title.slice(0,-7).replace(/\[.+?\]\s/, '');
 
 		// Put the pastable text together
-		const pastableText = '<a href="' + tabURL +  '">' + bugNum + "</a> - " + issueSummary
+		const pastableText = '<span style="font: 12px calibri; font-size: 11pt"> <a href="' + tabURL + 
+		'">' + bugNum + "</a> - " + issueSummary + "</span>";
 		console.log(pastableText);
 
 
